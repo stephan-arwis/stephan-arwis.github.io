@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     version="2.0">
+    <channel>
+        <title>ARWIS Backstuben Manager</title>
+        <link>https://updates.arwis.de/bm/appcast.xml</link>
+        <description>Automatische Updates für ARWIS Backstuben Manager</description>
+        <language>de</language>
+        <item>
+            <title>Version 1.4.0-pre13</title>
+            <pubDate>Mon, 01 Jun 2026 12:38:56 +0000</pubDate>
+            <sparkle:version>1.4.0-pre13</sparkle:version>
+            <sparkle:shortVersionString>1.4.0-pre13</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+                <h2>ARWIS Backstuben Manager 1.4.0-pre13</h2>
+                <p>Aktuelles Update. Release Notes folgen.</p>
+            ]]></description>
+            <enclosure
+                url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.4.0-pre13.pkg"
+                sparkle:edSignature="Koi5zw/kWBK8ZrMrb3dwuMIYZ8h045sjLIIDD41M8b+YP3J3bUvZquIHJKq4PmxKCdlPihHB4Df6lw6IBPanDw==" length="10121294"
+                type="application/octet-stream" />
+        </item>
+    </channel>
+</rss>
