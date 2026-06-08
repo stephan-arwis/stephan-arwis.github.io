@@ -8,18 +8,18 @@
         <description>Automatische Updates für ARWIS Backstuben Manager</description>
         <language>de</language>
         <item>
-            <title>Version 1.4.0-pre13</title>
-            <pubDate>Mon, 01 Jun 2026 12:38:56 +0000</pubDate>
-            <sparkle:version>1.4.0-pre13</sparkle:version>
-            <sparkle:shortVersionString>1.4.0-pre13</sparkle:shortVersionString>
+            <title>Version 1.5.6-demo</title>
+            <pubDate>Mon, 08 Jun 2026 14:47:31 +0000</pubDate>
+            <sparkle:version>1.5.6-demo</sparkle:version>
+            <sparkle:shortVersionString>1.5.6-demo</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
             <description><![CDATA[
-                <h2>ARWIS Backstuben Manager 1.4.0-pre13</h2>
+                <h2>ARWIS Backstuben Manager 1.5.6-demo</h2>
                 <p>Aktuelles Update. Release Notes folgen.</p>
             ]]></description>
             <enclosure
-                url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.4.0-pre13.pkg"
-                sparkle:edSignature="Koi5zw/kWBK8ZrMrb3dwuMIYZ8h045sjLIIDD41M8b+YP3J3bUvZquIHJKq4PmxKCdlPihHB4Df6lw6IBPanDw==" length="10121294"
+                url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.5.6-demo.pkg"
+                sparkle:edSignature="g+zYH/+dJrCjSBX0wWp/fNrW3yxvQKuiB4AQKvDWg5htayakELve0BFm8+nEwpEskVKJCRWrZMj+Q6ZUVJRvBg==" length="10230444"
                 type="application/octet-stream" />
         </item>
     </channel>
