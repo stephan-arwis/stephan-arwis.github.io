@@ -8,18 +8,24 @@
         <description>Automatische Updates für ARWIS Backstuben Manager</description>
         <language>de</language>
         <item>
-            <title>Version 1.5.8-demo</title>
-            <pubDate>Tue, 09 Jun 2026 06:40:22 +0000</pubDate>
-            <sparkle:version>1.5.8-demo</sparkle:version>
-            <sparkle:shortVersionString>1.5.8-demo</sparkle:shortVersionString>
+            <title>Version 1.6.3</title>
+            <pubDate>Wed, 10 Jun 2026 19:13:32 +0000</pubDate>
+            <sparkle:version>1.6.3</sparkle:version>
+            <sparkle:shortVersionString>1.6.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
             <description><![CDATA[
-                <h2>ARWIS Backstuben Manager 1.5.8-demo</h2>
-                <p>Aktuelles Update. Release Notes folgen.</p>
+                <h2>ARWIS Backstuben Manager 1.6.3</h2>
+                <ul>
+                    <li><b>BDE-Tracker (Werker-Terminal)</b> jetzt voll funktionsf&#228;hig &#8212; Erfassungsstationen, Slot-Anzeige und kontextabh&#228;ngige Schicht-Markierung.</li>
+                    <li><b>Seite &#8222;Basic Concepts&#8220; (17)</b> &#252;berarbeitet &#8212; neue Erkl&#228;rtexte und Diagramme zur Produkt- und Produktionslogik.</li>
+                    <li><b>Versionsnummer</b> jetzt durchgehend in der Seitenleiste sichtbar.</li>
+                    <li><b>Seite 28 (Produktionsplan):</b> Anzeigefehler in der Personal-Engpass-Tabelle behoben.</li>
+                    <li>Diverse interne Stabilit&#228;ts- und Daten-Korrekturen.</li>
+                </ul>
             ]]></description>
             <enclosure
-                url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.5.8-demo.pkg"
-                sparkle:edSignature="+OpRDu2+Bba6zf64Q2pqEAIFp9hiep4ZuZ97N7nh9MCIyOdMsBgaDJPNQ8qwG7p9fLPiq3LTbh5Q5tTff5EuDA==" length="10251770"
+                url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.6.3.pkg"
+                sparkle:edSignature="hf/aZ7qp1gIhOB5iBX27liLioastsA+uooo2SwhoH5Nu2+TF0F7VuvHpd6WWqLcHtFDgffOEcUBkOi94tGcbAg==" length="10419361"
                 type="application/octet-stream" />
         </item>
     </channel>
