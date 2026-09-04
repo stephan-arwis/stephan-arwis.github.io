@@ -16,6 +16,15 @@
   body{background:transparent;color:var(--tx);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
   .mood{position:fixed;inset:0;pointer-events:none;background:#C77A2A;opacity:0;transition:opacity 1.2s;z-index:0;}
+  /* Hinweis nur auf schmalen Hochkant-Bildschirmen (QR-Code-Besucher). */
+  #drehen{display:none;}
+  @media (max-width:700px) and (orientation:portrait){
+    #drehen{display:block;position:fixed;left:50%;top:14px;transform:translateX(-50%);
+      z-index:9;background:rgba(31,30,27,.86);color:#fff;font-size:13px;line-height:1.35;
+      padding:9px 14px;border-radius:10px;white-space:nowrap;
+      transition:opacity .6s;box-shadow:0 4px 14px rgba(0,0,0,.18);}
+    #drehen b{font-weight:700;}
+  }
 
   /* Fit-to-container: das Design ist fix 1200px breit und wird per transform
      so skaliert, dass es den Container (Einbettung ODER Vollbild) ganz füllt. */
@@ -123,6 +132,7 @@
 </head>
 <body>
 <div class="mood" id="mood"></div>
+<div id="drehen">Für die volle Backstube das Handy <b>quer</b> halten</div>
 <div class="viewport" id="viewport">
  <div class="wrap" id="wrap">
   <div class="head">
@@ -183,8 +193,12 @@
   //    per transform so skaliert, dass es den ganzen Bildschirm füllt. ────────
   var wrap=$('wrap');
   function isFs(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+  // Eigenständig (Website, QR-Code auf dem Handy) verhält sich die Seite wie im
+  // Vollbild: Das 1200px-Design wird auf den Bildschirm skaliert, damit nichts
+  // abgeschnitten wird. Im Einbett-Rahmen des Dashboards bleibt es fließend.
+  var STANDALONE=(function(){try{return window.self===window.top;}catch(e){return true;}})();
   function fit(){
-    if(isFs()){
+    if(isFs() || STANDALONE){
       wrap.style.width='1200px';wrap.style.transform='none';
       var wh=wrap.offsetHeight||540;
       var k=Math.min(window.innerWidth/1200, window.innerHeight/wh);
@@ -195,6 +209,9 @@
       wrap.style.transform='none';wrap.style.width='100%';
     }
   }
+  var _dreh=document.getElementById('drehen');
+  if(_dreh){setTimeout(function(){_dreh.style.opacity='0';},7000);
+            setTimeout(function(){_dreh.style.display='none';},7800);}
   window.addEventListener('resize',fit);
   window.addEventListener('load',fit);
 
