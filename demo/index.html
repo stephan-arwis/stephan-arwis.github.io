@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backstube Live · Breitbild · ARWIS</title>
+<style>
+  :root{
+    --panel:#FFFFFF; --track:#F4F1EC; --line:rgba(31,30,27,.09);
+    --tx:#1F1E1B; --tx2:#8a857c; --tx3:#b3ada3;
+    --blau:#4A6BC1; --teal:#1F9E77; --amber:#C77A2A; --gruen:#2E7D32; --warn:#B4671C;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  html{background:#ECEEF2;transition:background 1.5s linear;}
+  body{background:transparent;color:var(--tx);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  .mood{position:fixed;inset:0;pointer-events:none;background:#C77A2A;opacity:0;transition:opacity 1.2s;z-index:0;}
+
+  /* Fit-to-container: das Design ist fix 1200px breit und wird per transform
+     so skaliert, dass es den Container (Einbettung ODER Vollbild) ganz füllt. */
+  .viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:1;}
+  .wrap{position:relative;width:100%;flex:0 0 auto;transform-origin:center center;padding:20px 22px 22px;}
+
+  .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .logo{font-weight:700;letter-spacing:.01em;font-size:19px;}.logo b{color:var(--tx2);font-weight:400;}
+  .ctx{font-size:16px;color:var(--tx2);}
+  .rhead{display:flex;align-items:center;gap:12px;}
+  .badge{font-size:13px;color:var(--warn);background:rgba(199,122,42,.12);padding:5px 11px;border-radius:999px;font-weight:600;}
+  .live{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--tx2);}
+  .ld{width:8px;height:8px;border-radius:50%;background:var(--gruen);animation:pl 2.2s ease-in-out infinite;}
+  @keyframes pl{0%,100%{box-shadow:0 0 0 0 rgba(46,125,50,.4);}50%{box-shadow:0 0 0 5px rgba(46,125,50,0);}}
+  .fsbtn{font-family:inherit;font-size:14px;font-weight:600;color:var(--blau);
+    background:rgba(74,107,193,.10);border:1px solid rgba(74,107,193,.24);border-radius:999px;
+    padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    transition:background .18s,box-shadow .18s;line-height:1;-webkit-tap-highlight-color:transparent;}
+  .fsbtn:hover{background:rgba(74,107,193,.18);box-shadow:0 2px 8px -3px rgba(74,107,193,.5);}
+  .fsbtn:active{transform:translateY(.5px);}
+
+  /* 🥨 Brezelregen — feiert das Öffnen des Tabs, dann läuft die Backstube weiter */
+  .rain{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50;}
+  .pretzel{position:absolute;top:-12vh;opacity:0;will-change:transform,opacity;
+    animation-name:fall;animation-timing-function:cubic-bezier(.35,.15,.7,1);animation-fill-mode:forwards;
+    filter:drop-shadow(0 3px 5px rgba(31,30,27,.18));}
+  @keyframes fall{
+    0%{transform:translateY(-12vh) translateX(0) rotate(0);opacity:0;}
+    9%{opacity:1;}
+    82%{opacity:1;}
+    100%{transform:translateY(114vh) translateX(var(--drift)) rotate(var(--rot));opacity:0;}
+  }
+
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative;height:800px;}
+  .divider{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--line);}
+  .plabel{position:absolute;top:12px;font-size:16px;font-weight:500;color:var(--tx2);transform:translateX(-50%);text-align:center;}
+  .ovencol{position:absolute;top:36px;bottom:78px;border-radius:16px;
+    background:radial-gradient(120% 80% at 50% 45%, rgba(240,166,75,.16), rgba(240,166,75,.04) 72%, transparent);}
+  .ovenlab{position:absolute;bottom:60px;font-size:15px;color:var(--amber);font-weight:600;transform:translateX(-50%);}
+
+  .lane{position:absolute;left:0;right:0;}
+  .lane.lager{top:52px;height:330px;}
+  .lane.frische{top:432px;height:330px;}
+  .lanetag{position:absolute;left:12px;top:2px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;z-index:7;background:rgba(255,255,255,.9);padding:3px 9px;border-radius:999px;box-shadow:0 1px 4px -1px rgba(31,30,27,.18);}
+  .lanetag .dt{width:8px;height:8px;border-radius:50%;}
+  .tag-lager{color:var(--blau);}.tag-lager .dt{background:var(--blau);}
+  .tag-frische{color:var(--teal);}.tag-frische .dt{background:var(--teal);}
+
+  .loaf{position:absolute;border-radius:11px;transition:background .8s linear,opacity .5s;
+    background:#E8DCBB;width:40px;height:25px;border:1px solid rgba(31,30,27,.10);box-shadow:0 2px 5px -2px rgba(31,30,27,.16);}
+  .loaf.cool{background:#D9DEEC;border-color:rgba(74,107,193,.22);}
+  .loaf.shaped{background:#DEC9A0;border-radius:11px 11px 9px 9px;}
+  .loaf.baking{background:#B27E48;border-color:rgba(120,80,30,.30);}
+  .loaf.done{background:linear-gradient(180deg,#D99A46,#B4671C);border-color:rgba(120,60,20,.35);}
+  /* Ruhe-Phasen einheitlich Cyan: Teigruhe (Ende Teigposten, .teigruhe) und
+     Stückgare (Gärfenster, .rest). Farbe schiebt sanft (0.8s-Transition auf
+     .loaf). Gilt für FP + ZP; überstimmt cool/shaped/baking (später im File). */
+  .loaf.teigruhe,.loaf.rest{background:#17B8C5;border-color:rgba(18,140,150,.35);
+    display:flex;align-items:center;justify-content:center;}
+  .loaf.teigruhe::after{content:"TR";}   /* Teigruhe */
+  .loaf.rest::after{content:"SG";}        /* Stückgare */
+  .loaf.teigruhe::after,.loaf.rest::after{
+    font-size:11px;font-weight:700;letter-spacing:.06em;color:#0A5057;line-height:1;}
+  .loaf.focus{width:58px;height:36px;box-shadow:0 4px 14px -4px rgba(31,30,27,.32),0 0 0 3px rgba(31,158,119,.24);z-index:5;}
+  .loaf.focusep{width:57px;height:35px;box-shadow:0 4px 14px -4px rgba(31,30,27,.32),0 0 0 3px rgba(74,107,193,.26);z-index:5;}
+  .loaf.focuszp{width:56px;height:34px;box-shadow:0 4px 14px -4px rgba(31,30,27,.32),0 0 0 3px rgba(90,114,196,.30);z-index:5;}
+  .focuslab{position:absolute;font-size:16px;font-weight:600;color:var(--tx);white-space:nowrap;
+    background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:5px 11px;transform:translate(-50%,-40px);z-index:6;box-shadow:0 5px 14px -6px rgba(31,30,27,.28);}
+  .focuslab small{font-size:14px;font-weight:700;color:var(--teal);}   /* FP-Badge grün */
+  .focuslab.blue small{color:var(--blau);}                             /* EP-Badge blau */
+  .focuslab.zp small{color:#5a72c4;}                                   /* ZP-Badge kühl-blau */
+
+  .zl{position:absolute;background:rgba(74,107,193,.07);border:1px solid rgba(74,107,193,.22);border-radius:13px;padding:8px;display:flex;flex-direction:column;}
+  .zl .zt{font-size:14px;color:var(--blau);font-weight:600;}
+  .zl .zpname{font-size:13px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-height:15px;}
+  .zl .zn{font-size:21px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;}
+  .zl .zn span{font-size:13px;color:var(--tx2);font-weight:500;}
+  .zl .zg{margin-top:auto;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-end;}
+  .zl .zc{width:12px;height:9px;border-radius:2px;background:rgba(74,107,193,.35);}
+
+  .fenster{position:absolute;font-size:14px;color:var(--gruen);background:rgba(46,125,50,.10);padding:5px 11px;border-radius:999px;white-space:nowrap;transform:translateX(-50%);z-index:4;}
+
+  .vpanel{position:absolute;top:40px;bottom:16px;background:var(--track);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;}
+  .vdead{font-size:14px;color:var(--tx2);}.vdead b{color:var(--tx);font-size:18px;}
+  .vwagen{font-size:32px;font-weight:700;margin-top:9px;font-variant-numeric:tabular-nums;line-height:1;}
+  .vlab{font-size:14px;color:var(--tx2);margin-top:4px;}
+  .vbar{height:8px;border-radius:5px;background:rgba(31,30,27,.07);margin-top:10px;overflow:hidden;}
+  .vfill{height:100%;width:0;background:var(--blau);border-radius:5px;transition:width .6s;}
+  .vpool{flex:1;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:7px;grid-auto-rows:1fr;}
+  .vw{border-radius:6px;border:1px solid rgba(31,30,27,.13);background:transparent;transition:background .4s;}
+  .vw.filled{background:linear-gradient(180deg,#E3AB5F,#B4671C);border-color:rgba(120,60,20,.28);}
+
+  .watch{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:22px;}
+  .wsent{font-size:22px;font-weight:600;flex:0 0 auto;max-width:520px;line-height:1.3;}
+  .wtl{flex:1;}
+  .wtrow{display:flex;justify-content:space-between;font-size:13px;color:var(--tx3);margin-bottom:6px;}
+  .track2{position:relative;height:10px;border-radius:6px;background:rgba(31,30,27,.07);overflow:hidden;}
+  .plan{position:absolute;left:0;top:0;bottom:0;background:rgba(74,107,193,.20);}
+  .ist{position:absolute;left:0;top:0;bottom:0;background:var(--blau);transition:width .5s;}
+  .now{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--tx);opacity:.7;}
+  .heute{flex:0 0 auto;text-align:right;font-size:14px;color:var(--tx2);}
+  .heute b{color:var(--tx);font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="mood" id="mood"></div>
+<div class="viewport" id="viewport">
+ <div class="wrap" id="wrap">
+  <div class="head">
+    <div class="brand"><span class="logo">Backstuben Manager<b> – new generation</b></span><span class="ctx" id="ctx">Nachtschicht · 03:00 Uhr</span></div>
+    <div class="rhead">
+      <span class="badge">Vorschau · Beispieldaten</span>
+      <span class="live"><span class="ld"></span>live</span>
+      <button class="fsbtn" id="fsbtn" type="button" title="Vollbild (Esc zum Verlassen)">⛶ Vollbild</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="divider" id="d1"></div><div class="divider" id="d2"></div><div class="divider" id="d3"></div>
+    <div class="plabel" id="l1">Teigposten</div><div class="plabel" id="l2">Aufarbeitung</div>
+    <div class="plabel" id="l3">Backen / Veredeln</div><div class="plabel" id="l4">Versand</div>
+    <div class="ovencol" id="ovencol"></div><div class="ovenlab" id="ovenlab">Ofen</div>
+
+    <div class="lane lager" id="laneLager"></div>
+    <div class="lane frische" id="laneFrische"></div>
+
+    <div class="zl" id="zl">
+      <div class="zt">Zwischenlager</div>
+      <div class="zpname" id="zpname"></div>
+      <div class="zn"><span id="zn">312</span> <span>ZP</span></div>
+      <div class="zg" id="zg"></div>
+    </div>
+    <div class="fenster" id="fenster">Gären · im Fenster ✓</div>
+
+    <div class="vpanel" id="vpanel">
+      <div class="vdead">Versand <b>06:00</b><span id="vcd"></span></div>
+      <div class="vwagen"><span id="vw">14</span> / 18</div>
+      <div class="vlab">Wagen bereit</div>
+      <div class="vbar"><div class="vfill" id="vfill"></div></div>
+      <div class="vpool" id="vpool"></div>
+    </div>
+  </div>
+
+  <div class="watch">
+    <div class="wsent" id="wsent">Alles im Takt.</div>
+    <div class="wtl">
+      <div class="wtrow"><span>Schicht 02:00</span><span>jetzt</span><span>Versand 06:00</span></div>
+      <div class="track2"><div class="plan" id="plan"></div><div class="ist" id="ist"></div><div class="now" id="now"></div></div>
+    </div>
+    <div class="heute">heute <b id="cs">0</b> Stück<br><b id="cw">0</b> Wagen fertig</div>
+  </div>
+ </div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function fmt(m){m=Math.round(m);var h=Math.floor(m/60);return (h<10?'0':'')+h+':'+((m%60)<10?'0':'')+(m%60);}
+  function lerp(a,b,t){return Math.round(a+(b-a)*t);}
+  var NIGHT=[236,238,242],DAWN=[251,247,239];
+
+  // ── Größe: NORMAL füllt die Animation die volle Container-Breite (fluid,
+  //    natürliche Höhe — kein grauer Rand). Im VOLLBILD wird das 1200px-Design
+  //    per transform so skaliert, dass es den ganzen Bildschirm füllt. ────────
+  var wrap=$('wrap');
+  function isFs(){return !!(document.fullscreenElement||document.webkitFullscreenElement);}
+  function fit(){
+    if(isFs()){
+      wrap.style.width='1200px';wrap.style.transform='none';
+      var wh=wrap.offsetHeight||540;
+      var k=Math.min(window.innerWidth/1200, window.innerHeight/wh);
+      if(!isFinite(k)||k<=0)k=1;
+      wrap.style.transform='scale('+k+')';
+    }else{
+      // fließend: volle Breite des Einbett-Rahmens, natürliche Höhe
+      wrap.style.transform='none';wrap.style.width='100%';
+    }
+  }
+  window.addEventListener('resize',fit);
+  window.addEventListener('load',fit);
+
+  // ── Vollbild-Button — sauberer Umschalter (Vollbild ⇄ zurück) ──────────────
+  // Alles Vollbild läuft über das eigene Dokument des iframes (allow=fullscreen
+  // ist gesetzt) → document.fullscreenElement erkennt es zuverlässig, exit
+  // funktioniert. Kein neuer Tab, kein Griff in die Eltern-DOM.
+  var fsbtn=$('fsbtn');
+  fsbtn.addEventListener('click',function(){
+    if(isFs()){(document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);return;}
+    var el=document.documentElement, req=el.requestFullscreen||el.webkitRequestFullscreen;
+    if(req){var p=req.call(el);if(p&&p.catch)p.catch(function(){});}
+  });
+  function onFsChange(){fsbtn.textContent=isFs()?'✕ Vollbild verlassen':'⛶ Vollbild';setTimeout(fit,60);}
+  document.addEventListener('fullscreenchange',onFsChange);
+  document.addEventListener('webkitfullscreenchange',onFsChange);
+
+  // ── 🥨 Brezelregen beim Öffnen des Tabs ───────────────────────────────────
+  // Streamlit rendert inaktive Tabs mit `hidden` → clientHeight 0. Wird der
+  // Tab geklickt, springt clientHeight auf >0: diese Flanke löst den Regen aus.
+  // Selbst-enthalten (kein Zugriff auf die Eltern-DOM), läuft auch im Vollbild
+  // und in der Standalone-Datei.
+  function pretzelRain(){
+    var layer=document.createElement('div');layer.className='rain';
+    // ~8 Sekunden Regen: Startzeit-Versatz bis 2,4 s + Fallzeit bis 6,0 s →
+    // letzte Brezel landet um ~8,4 s; genug Brezeln für gleichmäßige Dichte.
+    var N=64;
+    for(var i=0;i<N;i++){
+      var p=document.createElement('div');p.className='pretzel';p.textContent='🥨';
+      var size=18+Math.random()*26, dur=3.6+Math.random()*2.4, delay=Math.random()*2.4,
+          drift=(Math.random()*2-1)*90, rot=(Math.random()*2-1)*560;
+      p.style.left=(Math.random()*100)+'vw';
+      p.style.fontSize=size.toFixed(0)+'px';
+      p.style.animationDuration=dur.toFixed(2)+'s';
+      p.style.animationDelay=delay.toFixed(2)+'s';
+      p.style.setProperty('--drift',drift.toFixed(0)+'px');
+      p.style.setProperty('--rot',rot.toFixed(0)+'deg');
+      layer.appendChild(p);
+    }
+    document.body.appendChild(layer);
+    setTimeout(function(){layer.remove();},8800);
+  }
+  function isVisible(){return document.documentElement.clientHeight>0 && document.documentElement.clientWidth>0;}
+  var wasVisible=isVisible();
+  if(wasVisible)pretzelRain();
+  setInterval(function(){
+    var v=isVisible();
+    if(v && !wasVisible){pretzelRain();setTimeout(fit,40);}
+    wasVisible=v;
+  },200);
+
+  // ── Produktnamen ──────────────────────────────────────────────────────────
+  // Echte FP/EP/ZP-Namen werden vom Dashboard (Python, mit DB-Zugriff) zur
+  // Laufzeit in INJECT gespritzt. Fällt das weg (Website / Standalone), greifen
+  // die neutralen Beispiele. Die ausgelieferte Datei bleibt also neutral.
+  var INJECT=null; /*__INJECT__*/
+  var NEUTRAL={
+    fp:["Bauernbrot 750g","Roggenmischbrot 1000g","Dinkelvollkorn 500g","Hausbrot 1000g","Sonnenblumenbrot 750g","Krustenbrot 750g","Mehrkornbrot 500g","Walnussbrot 500g"],
+    ep:["Sonnenkörnersemmel","Laugenbrezel","Körnerbrötchen","Apfelplunder","Nussschnecke","Butterhörnchen","Käsestange","Mohnbrötchen"],
+    zp:["Laugen-Teigling","Semmel-Teigling","Plunder-Rohling","Brezel-Rohling","Croissant-Rohling","Körner-Teigling"]
+  };
+  function poolOf(k){return (INJECT&&INJECT[k]&&INJECT[k].length)?INJECT[k]:NEUTRAL[k];}
+  var POOL_FP=poolOf('fp'), POOL_EP=poolOf('ep'), POOL_ZP=poolOf('zp');
+  function pickFP(){return POOL_FP[Math.floor(Math.random()*POOL_FP.length)];}
+  function pickFPExcept(ex){if(POOL_FP.length<2)return pickFP();var n,g=0;do{n=pickFP();}while(n===ex&&++g<12);return n;}
+  function pickEP(){return POOL_EP[Math.floor(Math.random()*POOL_EP.length)];}
+  function pickZP(){return POOL_ZP[Math.floor(Math.random()*POOL_ZP.length)];}
+
+  var laneL=$('laneLager'), laneF=$('laneFrische');
+  function mk(host,cls){var e=document.createElement('div');e.className='loaf '+cls;host.appendChild(e);return e;}
+  function mklab(host,cls){var e=document.createElement('div');e.className='focuslab'+(cls?' '+cls:'');host.appendChild(e);return e;}
+  function setLab(lab,t,pos,W,typ){var lx=Math.max(180,Math.min(W-180,pos.x));lab.style.left=lx+'px';lab.style.top=Math.max(0,pos.y)+'px';lab.innerHTML=t.name+' <small>· '+typ+'</small>';}
+
+  // Frische (unten): FP — ZWEI fest beschriftete Pills (fr[0] + fr[7])
+  var fr=[]; var flabA=mklab(laneF,''), flabB=mklab(laneF,'');
+  for(var i=0;i<14;i++){fr.push({el:mk(laneF,''),pos:(i/14)*0.78+Math.random()*0.03,spd:0.030+Math.random()*0.014,row:i%4,name:pickFP(),stage:'',fade:false});}
+  fr[0].el.classList.add('focus'); fr[7].el.classList.add('focus');
+  if(fr[7].name===fr[0].name)fr[7].name=pickFPExcept(fr[0].name);   // 2. FP-Pill != 1.
+  function isFocF(i){return i===0||i===7;}
+  function fstage(p){return p<0.24?'dough':p<0.52?'shaped':p<0.72?'baking':'done';}
+
+  // Lager oben — Zufluss (ZP, cool) 0→0.42, lin[0] beschriftet ;
+  //              Abfluss (EP aus Zwischenlager) 0.58→0.80, lout[0] beschriftet
+  var lin=[]; var flabZ=mklab(laneL,'zp');
+  for(var i=0;i<9;i++)lin.push({el:mk(laneL,'cool'),pos:(i/9)*0.40,spd:0.028+Math.random()*0.012,row:i%4,name:pickZP(),fade:false});
+  lin[0].el.classList.add('focuszp');
+  var lout=[]; var flabE=mklab(laneL,'blue');
+  for(var i=0;i<7;i++){lout.push({el:mk(laneL,''),pos:0.58+(i/7)*0.20,spd:0.030+Math.random()*0.012,row:i%4,name:pickEP(),stage:'',fade:false});}
+  lout[0].el.classList.add('focusep');
+  function ostage(p){return p<0.68?'shaped':p<0.78?'baking':'done';}
+  var stock=312, lastZp=-1;
+
+  var cs=0,cw=14,last=null;
+  function place(t,host,W){ var x=8+t.pos*(W-16), y=22+t.row*90; t.el.style.left=x+'px'; t.el.style.top=y+'px'; return {x:x,y:y}; }
+
+  function frame(ts){
+    if(last===null)last=ts; var dt=(ts-last)/1000; last=ts; var tt=ts/1000; var W=$('stage').clientWidth||1156;
+    // Spalten-Geometrie
+    function fx(f){return f*W;}
+    $('d1').style.left=fx(0.24)+'px';$('d2').style.left=fx(0.52)+'px';$('d3').style.left=fx(0.82)+'px';
+    $('l1').style.left=fx(0.12)+'px';$('l2').style.left=fx(0.38)+'px';$('l3').style.left=fx(0.67)+'px';$('l4').style.left=fx(0.91)+'px';
+    $('ovencol').style.left=fx(0.53)+'px';$('ovencol').style.width=fx(0.27)+'px';$('ovenlab').style.left=fx(0.665)+'px';
+    $('zl').style.left=fx(0.44)+'px';$('zl').style.width=fx(0.11)+'px';$('zl').style.top='78px';$('zl').style.height='300px';
+    $('fenster').style.left=fx(0.40)+'px';$('fenster').style.bottom='14px';
+    $('vpanel').style.left=fx(0.835)+'px';$('vpanel').style.width=fx(0.135)+'px';
+
+    // Tag & Rhythmus — Himmelsfarbe auf <html> (rahmt die Animation im Vollbild)
+    var clockMin=120+(tt*2)%240, dayFrac=(clockMin-120)/240;
+    document.documentElement.style.background='rgb('+lerp(NIGHT[0],DAWN[0],dayFrac)+','+lerp(NIGHT[1],DAWN[1],dayFrac)+','+lerp(NIGHT[2],DAWN[2],dayFrac)+')';
+    $('ctx').textContent='Nachtschicht · '+fmt(clockMin)+' Uhr';
+
+    // Frische
+    fr.forEach(function(t,i){
+      if(t.fade)return;
+      var teigruhe=(t.pos>0.16&&t.pos<0.235);   // Ende Teigposten: Teig ruht
+      var slow=(teigruhe||(t.pos>0.44&&t.pos<0.54))?0.4:1; t.pos+=t.spd*slow*dt;
+      if(t.pos>=0.80){ t.fade=true;t.el.style.opacity='0';cs+=Math.round(120+Math.random()*80);cw+=1;
+        setTimeout((function(tk){return function(){
+          var other=(tk===fr[0])?fr[7]:(tk===fr[7])?fr[0]:null;   // beschriftete FP-Pills unterscheiden
+          tk.name=other?pickFPExcept(other.name):pickFP();
+          tk.pos=0;tk.row=Math.floor(Math.random()*4);tk.stage='';tk.fade=false;tk.el.style.opacity='1';};})(t),600); return; }
+      var st=fstage(t.pos);
+      if(st!==t.stage){t.el.className='loaf'+(st==='shaped'?' shaped':st==='baking'?' baking':st==='done'?' done':'')+(isFocF(i)?' focus':'');t.stage=st;}
+      var rest=(t.pos>0.44&&t.pos<0.54);
+      if(rest&&t.el.className.indexOf('rest')<0)t.el.classList.add('rest'); if(!rest&&t.el.className.indexOf('rest')>=0)t.el.classList.remove('rest');
+      if(teigruhe)t.el.classList.add('teigruhe'); else t.el.classList.remove('teigruhe');
+      var pos=place(t,laneF,W);
+      if(i===0)setLab(flabA,t,pos,W,'FP'); else if(i===7)setLab(flabB,t,pos,W,'FP');
+    });
+    // Lager Zufluss → Zwischenlager
+    lin.forEach(function(t,i){ if(t.fade)return;
+      var tr=(t.pos>0.16&&t.pos<0.235); t.pos+=t.spd*(tr?0.4:1)*dt;   // Teigruhe ZP
+      if(tr)t.el.classList.add('teigruhe'); else t.el.classList.remove('teigruhe');
+      if(t.pos>=0.42){t.fade=true;t.el.style.opacity='0';stock++;
+        setTimeout((function(tk){return function(){tk.name=pickZP();tk.pos=0;tk.row=Math.floor(Math.random()*4);tk.fade=false;tk.el.style.opacity='1';};})(t),500);return;}
+      var pos=place(t,laneL,W);
+      if(i===0)setLab(flabZ,t,pos,W,'ZP');
+    });
+    // Lager Abfluss (EP aus Zwischenlager) → Ofen → Versand
+    lout.forEach(function(t,i){ if(t.fade)return; t.pos+=t.spd*dt;
+      if(t.pos>=0.80){t.fade=true;t.el.style.opacity='0';cs+=Math.round(140+Math.random()*90);cw+=1;stock=Math.max(0,stock-1);
+        setTimeout((function(tk){return function(){tk.name=pickEP();tk.pos=0.58;tk.row=Math.floor(Math.random()*4);tk.stage='';tk.fade=false;tk.el.style.opacity='1';};})(t),500);return;}
+      var st=ostage(t.pos); if(st!==t.stage){t.el.className='loaf'+(st==='baking'?' baking':st==='done'?' done':' shaped')+(i===0?' focusep':'');t.stage=st;}
+      var pos=place(t,laneL,W);
+      if(i===0)setLab(flabE,t,pos,W,'EP');
+    });
+    // Zwischenlager-Anzeige (Bestand + rotierender ZP-Produktname, alle ~3,5 s)
+    $('zn').textContent=stock;
+    var zpBucket=Math.floor(tt/3.5);
+    if(zpBucket!==lastZp){lastZp=zpBucket;$('zpname').textContent=pickZP();}
+    var tiles=Math.round(Math.min(150,stock/2.1));
+    var zg=$('zg'); if(zg.children.length!==tiles){zg.innerHTML='';for(var k=0;k<tiles;k++){var d=document.createElement('div');d.className='zc';zg.appendChild(d);}}
+
+    // Wächter — menschlich
+    var lag=Math.max(0,4.4*Math.sin(tt/13));
+    var planFrac=Math.min(0.86,0.30+(tt%150)*0.0036),istFrac=Math.max(0,planFrac-lag/240);
+    $('plan').style.width=(planFrac*100)+'%';$('ist').style.width=(istFrac*100)+'%';$('now').style.left=(planFrac*100)+'%';
+    var readyMin=348+Math.round(lag),puffer=360-readyMin,sent=$('wsent'),msg,col;
+    if(puffer>=6){msg='Alles im Takt — fertig für Versand '+fmt(readyMin)+'.';col='var(--tx)';}
+    else if(puffer>=1){msg='Wird knapp — fertig '+fmt(readyMin)+', nur '+puffer+' Min vor Versand.';col='var(--warn)';}
+    else{msg='Rückstand — der Ofen holt auf, Versand 06:00 im Blick.';col='var(--warn)';}
+    if(sent.textContent!==msg)sent.textContent=msg; sent.style.color=col;
+    $('mood').style.opacity=(Math.max(0,Math.min(1,(lag-1)/3))*0.05).toFixed(3);
+
+    // Versand — Regal füllt sich Richtung Versand 06:00, aber nie ganz voll
+    // (bei 15 gedeckelt → immer ≥3 Stellplätze frei). „heute X Wagen fertig"
+    // (cw) läuft davon unabhängig als Tagessumme weiter.
+    var wagen=Math.min(15,Math.max(3,Math.round(3+dayFrac*13))),cd=Math.round(360-clockMin);
+    $('vcd').textContent = cd<60 ? (' · in '+cd+' Min') : '';
+    $('vw').textContent=wagen; $('vfill').style.width=(wagen/18*100)+'%';
+    var pool=$('vpool'); if(pool.children.length!==18){pool.innerHTML='';for(var k=0;k<18;k++){var d=document.createElement('div');d.className='vw';pool.appendChild(d);}}
+    for(var k=0;k<18;k++){pool.children[k].classList.toggle('filled',k<wagen);}
+    $('cs').textContent=cs.toLocaleString('de-DE'); $('cw').textContent=cw;
+    requestAnimationFrame(frame);
+  }
+  fit();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
