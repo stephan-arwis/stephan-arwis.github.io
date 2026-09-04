@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>ARWIS Backstuben Manager</title>
+    <description>Most recent changes with links to updates</description>
+    <language>en</language>
+    <item>
+      <title>ARWIS Backstuben Manager 1.8.11</title>
+      <pubDate>Fri, 04 Sep 2026 11:06:15 +02:00</pubDate>
+      <sparkle:version>1.8.11</sparkle:version>
+      <sparkle:shortVersionString>1.8.11</sparkle:shortVersionString>
+      <enclosure url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.8.11.msi" sparkle:version="1.8.11" sparkle:shortVersionString="1.8.11" length="61607936" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="4vN9LKEP5lTECT6qvprd9VWUQqp68hzdPaCATAiPIr73H7N0SP66C4LfzhGZH+kzT87wHfJAEDyx2+PJvmNRDA==" />
+    </item>
+  </channel>
+</rss>
