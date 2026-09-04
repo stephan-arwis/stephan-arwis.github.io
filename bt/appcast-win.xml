@@ -6,10 +6,10 @@
     <language>en</language>
     <item>
       <title>ARWIS Backstuben Tracker 1.8.11</title>
-      <pubDate>Fri, 04 Sep 2026 11:06:15 +02:00</pubDate>
+      <pubDate>Fri, 04 Sep 2026 11:10:07 +02:00</pubDate>
       <sparkle:version>1.8.11</sparkle:version>
       <sparkle:shortVersionString>1.8.11</sparkle:shortVersionString>
-      <enclosure url="https://updates.arwis.de/bt/ARWIS-Backstuben-Manager-1.8.11.msi" sparkle:version="1.8.11" sparkle:shortVersionString="1.8.11" length="61607936" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="4vN9LKEP5lTECT6qvprd9VWUQqp68hzdPaCATAiPIr73H7N0SP66C4LfzhGZH+kzT87wHfJAEDyx2+PJvmNRDA==" />
+      <enclosure url="https://updates.arwis.de/bt/ARWIS-Backstuben-Tracker-1.8.11.msi" sparkle:version="1.8.11" sparkle:shortVersionString="1.8.11" length="57720832" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="Ei33mukzT9baB0bXt6hBJYfjtUGuuOulWNFv18sgRj6PGg9E/hmy8fQ43xmNYsAr8wkjQoMnrXL2Xh8MAAJjCQ==" />
     </item>
   </channel>
 </rss>
