@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>ARWIS Arbeitswirtschaft</title>
+    <description>Most recent changes with links to updates</description>
+    <language>en</language>
+    <item>
+      <title>ARWIS Arbeitswirtschaft 1.2.5</title>
+      <pubDate>Fri, 09 Oct 2026 17:16:01 +02:00</pubDate>
+      <sparkle:version>1.2.5</sparkle:version>
+      <sparkle:shortVersionString>1.2.5</sparkle:shortVersionString>
+      <enclosure url="https://updates.arwis.de/aw/ARWIS-Arbeitswirtschaft-1.2.5.msi" sparkle:version="1.2.5" sparkle:shortVersionString="1.2.5" length="59046595" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="wWRpro76lyKQJQo0rnxORWmgQXVZVVIxTQfOVwvOukreRqoR63JgXSCTekBx/38XzMyZoEdH0Ff5xpyAqB2hCQ==" />
+    </item>
+  </channel>
+</rss>
