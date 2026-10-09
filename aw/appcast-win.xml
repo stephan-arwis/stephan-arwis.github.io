@@ -5,11 +5,11 @@
     <description>Most recent changes with links to updates</description>
     <language>en</language>
     <item>
-      <title>ARWIS Arbeitswirtschaft 1.2.5</title>
-      <pubDate>Fri, 09 Oct 2026 17:16:01 +02:00</pubDate>
-      <sparkle:version>1.2.5</sparkle:version>
-      <sparkle:shortVersionString>1.2.5</sparkle:shortVersionString>
-      <enclosure url="https://updates.arwis.de/aw/ARWIS-Arbeitswirtschaft-1.2.5.msi" sparkle:version="1.2.5" sparkle:shortVersionString="1.2.5" length="59046595" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="wWRpro76lyKQJQo0rnxORWmgQXVZVVIxTQfOVwvOukreRqoR63JgXSCTekBx/38XzMyZoEdH0Ff5xpyAqB2hCQ==" />
+      <title>ARWIS Arbeitswirtschaft 1.2.6</title>
+      <pubDate>Fri, 09 Oct 2026 17:37:57 +02:00</pubDate>
+      <sparkle:version>1.2.6</sparkle:version>
+      <sparkle:shortVersionString>1.2.6</sparkle:shortVersionString>
+      <enclosure url="https://updates.arwis.de/aw/ARWIS-Arbeitswirtschaft-1.2.6.msi" sparkle:version="1.2.6" sparkle:shortVersionString="1.2.6" length="59054885" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="57IL5g/qeR1yqoQ6wzuZJo5di5cxxxhmYoQjIiUhcUNpy3IF1vE85pY0ob4kRw8Es3LgNtit9G/PsbO1QQHODQ==" />
     </item>
   </channel>
 </rss>
