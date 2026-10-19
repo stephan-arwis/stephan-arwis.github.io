@@ -5,11 +5,11 @@
     <description>Most recent changes with links to updates</description>
     <language>en</language>
     <item>
-      <title>ARWIS Backstuben Manager 1.8.71</title>
-      <pubDate>Sun, 18 Oct 2026 21:24:39 +02:00</pubDate>
-      <sparkle:version>1.8.71</sparkle:version>
-      <sparkle:shortVersionString>1.8.71</sparkle:shortVersionString>
-      <enclosure url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.8.71.msi" sparkle:version="1.8.71" sparkle:shortVersionString="1.8.71" length="61923328" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="7JMvlXA5AcPkjWEND0rw6id0ehbB1chCqFHFDeLG41hcfcTPwrmubYz4OjjEY3CSuEzUUKnMw/osOA1eoR0XBw==" />
+      <title>ARWIS Backstuben Manager 1.8.73</title>
+      <pubDate>Mon, 19 Oct 2026 12:17:09 +02:00</pubDate>
+      <sparkle:version>1.8.73</sparkle:version>
+      <sparkle:shortVersionString>1.8.73</sparkle:shortVersionString>
+      <enclosure url="https://updates.arwis.de/bm/ARWIS-Backstuben-Manager-1.8.73.msi" sparkle:version="1.8.73" sparkle:shortVersionString="1.8.73" length="61931520" sparkle:os="windows" type="application/octet-stream" sparkle:criticalUpdate="false" sparkle:edSignature="UbGbnKsvyQojf2NY7ENXjwKooyGpx8abak65D0RbxQDWrInS8hnCmeXO/qy1S5kX5+CxlCC2YulQw/KkUOn5AQ==" />
     </item>
   </channel>
 </rss>
